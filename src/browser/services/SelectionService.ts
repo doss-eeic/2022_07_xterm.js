@@ -695,19 +695,17 @@ export class SelectionService extends Disposable implements ISelectionService {
 
     this._removeMouseDownListeners();
 
-    if (this.selectionText.length <= 1) {
-      if (this._bufferService.buffer.ybase === this._bufferService.buffer.ydisp) {
-        const coordinates = this._mouseService.getCoords(
-          event,
-          this._element,
-          this._bufferService.cols,
-          this._bufferService.rows,
-          false
-        );
-        if (coordinates && coordinates[0] !== undefined && coordinates[1] !== undefined) {
-          const sequence = moveToCellSequence(coordinates[0] - 1, coordinates[1] - 1, this._bufferService, this._coreService.decPrivateModes.applicationCursorKeys);
-          this._coreService.triggerDataEvent(sequence, true);
-        }
+    if (this.selectionText.length <= 1 && this._bufferService.buffer.ybase === this._bufferService.buffer.ydisp) {
+      const coordinates = this._mouseService.getCoords(
+        event,
+        this._element,
+        this._bufferService.cols,
+        this._bufferService.rows,
+        false
+      );
+      if (coordinates && coordinates[0] !== undefined && coordinates[1] !== undefined) {
+        const sequence = moveToCellSequence(coordinates[0] - 1, coordinates[1] - 1, this._bufferService, this._coreService.decPrivateModes.applicationCursorKeys);
+        this._coreService.triggerDataEvent(sequence, true);
       }
     } else {
       this._fireEventIfSelectionChanged();
